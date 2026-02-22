@@ -256,6 +256,7 @@ h3 {
   font-size: clamp(1rem, 1.5vw, 1.15rem);
   margin-bottom: 1.5rem;
   color: rgba(255, 255, 255, 0.85);
+  text-wrap: balance;
 }
 
 .what-this-is__content p:first-of-type {
@@ -469,6 +470,7 @@ h3 {
   font-size: 0.95rem;
   color: var(--color-text-muted);
   font-style: italic;
+  text-wrap: balance;
 }
 
 /* ==========================================================================
@@ -508,10 +510,12 @@ h3 {
 .find-us__icons {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
-  gap: clamp(1.5rem, 4vw, 3rem);
+  gap: 2rem 2.5rem;
   margin-top: 1.5rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .find-us__link {
@@ -519,6 +523,7 @@ h3 {
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
+  width: 80px;
   color: rgba(255, 255, 255, 0.7);
   transition: color 0.2s ease;
   text-decoration: none;
