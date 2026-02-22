@@ -1,0 +1,590 @@
+/* ==========================================================================
+   Question Everything — Design System & Styles
+   ========================================================================== */
+
+/* --- Fonts --- */
+@font-face {
+  font-family: 'Oswald';
+  src: url('/assets/fonts/Oswald-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/Inter-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- Custom Properties --- */
+:root {
+  --color-primary: #FA7017;
+  --color-navy: #04344f;
+  --color-navy-light: #0a4d72;
+  --color-white: #ffffff;
+  --color-offwhite: #f8f8f8;
+  --color-text-muted: #9baab8;
+
+  --font-display: 'Oswald', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --container-max: 1100px;
+  --section-padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 4vw, 2rem);
+}
+
+/* --- Reset --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-white);
+  background: var(--color-navy);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --- Utility --- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--section-padding);
+}
+
+/* --- Section Backgrounds --- */
+.bg-navy {
+  background-color: var(--color-navy);
+}
+
+.bg-white {
+  background-color: var(--color-white);
+  color: var(--color-navy);
+}
+
+/* --- Typography --- */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.8rem;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background: #e5640f;
+  border-color: #e5640f;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary--dark {
+  color: var(--color-navy);
+  border-color: var(--color-navy);
+}
+
+.btn-secondary--dark:hover,
+.btn-secondary--dark:focus-visible {
+  background: rgba(4, 52, 79, 0.08);
+}
+
+/* --- Section Divider --- */
+.section-divider {
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--color-primary);
+  border: none;
+  margin: 0 auto 2rem;
+}
+
+/* ==========================================================================
+   Section 1 — Hero
+   ========================================================================== */
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2rem);
+  position: relative;
+}
+
+/* --- Wordmark Image --- */
+.hero__wordmark {
+  width: clamp(260px, 45vw, 450px);
+  margin-bottom: 2.5rem;
+}
+
+.footer__wordmark {
+  width: clamp(150px, 20vw, 200px);
+}
+
+.hero__headline {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  max-width: 700px;
+}
+
+.hero__headline .accent {
+  color: var(--color-primary);
+}
+
+.hero__attribution {
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+}
+
+.hero__subhead {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  max-width: 600px;
+  color: var(--color-text-muted);
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ==========================================================================
+   Section 2 — What This Is
+   ========================================================================== */
+
+.what-this-is {
+  text-align: center;
+}
+
+.what-this-is__content {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.what-this-is__content p {
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.what-this-is__content p:first-of-type {
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+  color: var(--color-white);
+  font-weight: 800;
+}
+
+.what-this-is__content p:last-of-type {
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   Section 3 — Recent Episodes
+   ========================================================================== */
+
+.episodes__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 600px) {
+  .episodes__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .episodes__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.episode-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+}
+
+.episode-card:hover,
+.episode-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.episode-card__thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.episode-card__body {
+  padding: 1rem 1.25rem 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.episode-card__title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+.episode-card__desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  flex: 1;
+  /* Clamp to 3 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.episodes__more {
+  text-align: center;
+}
+
+.episodes__more a {
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.episodes__more a:hover,
+.episodes__more a:focus-visible {
+  border-bottom-color: var(--color-primary);
+}
+
+/* Loading state */
+.episodes__loading {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   Section 4 — Newsletter CTA
+   ========================================================================== */
+
+.newsletter {
+  text-align: center;
+}
+
+.newsletter h2 {
+  color: var(--color-navy);
+}
+
+.newsletter__subtitle {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+}
+
+.newsletter__desc {
+  max-width: 580px;
+  margin: 0 auto 2rem;
+  font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+  color: #3a5568;
+  line-height: 1.8;
+}
+
+/* ==========================================================================
+   Section 5 — The Hosts
+   ========================================================================== */
+
+.hosts__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .hosts__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+}
+
+.host {
+  text-align: center;
+}
+
+.host__photo {
+  width: clamp(140px, 25vw, 200px);
+  height: clamp(140px, 25vw, 200px);
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1.25rem;
+  border: 3px solid var(--color-primary);
+}
+
+.host__photo--placeholder {
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: clamp(140px, 25vw, 200px);
+  height: clamp(140px, 25vw, 200px);
+  margin: 0 auto 1.25rem;
+  border: 3px solid var(--color-primary);
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: var(--color-primary);
+}
+
+.host__name {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.75rem;
+}
+
+.host__bio {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.hosts__origin {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* ==========================================================================
+   Section 6 — Be a Guest
+   ========================================================================== */
+
+.be-a-guest {
+  text-align: center;
+}
+
+.be-a-guest__content {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.be-a-guest__content p {
+  font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.be-a-guest__cta {
+  margin-top: 0.5rem;
+}
+
+/* ==========================================================================
+   Section 7 — Find Us
+   ========================================================================== */
+
+.find-us {
+  text-align: center;
+  padding-top: clamp(3rem, 6vw, 5rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.find-us__icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-top: 1.5rem;
+}
+
+.find-us__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease;
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.find-us__link:hover,
+.find-us__link:focus-visible {
+  color: var(--color-primary);
+}
+
+.find-us__link svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+}
+
+/* ==========================================================================
+   Section 8 — Footer
+   ========================================================================== */
+
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 2rem clamp(1.25rem, 4vw, 2rem);
+}
+
+.footer__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.footer__links {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.footer__links a {
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+}
+
+.footer__links a:hover,
+.footer__links a:focus-visible {
+  color: var(--color-primary);
+}
+
+.footer__copy {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ==========================================================================
+   Responsive Refinements
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  .footer__inner {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}

@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guest Snapshot | Question Everything</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: #faf9f6;
+      color: #1a1a2e;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #e0ddd6;
+    }
+
+    .header h1 {
+      font-size: 1.75rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.75rem;
+    }
+
+    .header p {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.95rem;
+      color: #6b6b7b;
+      line-height: 1.6;
+    }
+
+    /* Progress */
+    .progress-bar {
+      width: 100%;
+      height: 2px;
+      background: #e8e6e0;
+      margin-bottom: 3rem;
+      border-radius: 1px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #1a1a2e;
+      transition: width 0.4s ease;
+      border-radius: 1px;
+    }
+
+    .progress-text {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.8rem;
+      color: #9b9bab;
+      text-align: right;
+      margin-top: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Steps */
+    .step {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .step.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Questions */
+    .question {
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+    }
+
+    .question-hint {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.85rem;
+      color: #8b8b9b;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    /* Radio options */
+    .options { margin-top: 1.5rem; }
+
+    .option {
+      display: block;
+      position: relative;
+      padding: 0.9rem 1.1rem 0.9rem 2.8rem;
+      margin-bottom: 0.6rem;
+      border: 1px solid #e0ddd6;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      transition: all 0.2s ease;
+      background: #fff;
+    }
+
+    .option:hover {
+      border-color: #c5c3bb;
+      background: #fdfcfa;
+    }
+
+    .option input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .option .radio-dot {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      border: 2px solid #d0cec6;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .option input:checked ~ .radio-dot {
+      border-color: #1a1a2e;
+      background: #1a1a2e;
+      box-shadow: inset 0 0 0 3px #faf9f6;
+    }
+
+    .option:has(input:checked) {
+      border-color: #1a1a2e;
+      background: #f5f4f0;
+    }
+
+    /* Text inputs */
+    .text-input {
+      width: 100%;
+      padding: 1rem 1.1rem;
+      border: 1px solid #e0ddd6;
+      border-radius: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      background: #fff;
+      resize: vertical;
+      min-height: 140px;
+      transition: border-color 0.2s ease;
+      color: #1a1a2e;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: #1a1a2e;
+    }
+
+    .text-input::placeholder {
+      color: #b5b5c0;
+    }
+
+    /* Name input */
+    .name-input {
+      width: 100%;
+      padding: 0.8rem 1.1rem;
+      border: 1px solid #e0ddd6;
+      border-radius: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 1rem;
+      background: #fff;
+      transition: border-color 0.2s ease;
+      color: #1a1a2e;
+    }
+
+    .name-input:focus {
+      outline: none;
+      border-color: #1a1a2e;
+    }
+
+    .name-input::placeholder {
+      color: #b5b5c0;
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #f0ede6;
+    }
+
+    button {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.9rem;
+      padding: 0.7rem 1.6rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-next {
+      background: #1a1a2e;
+      color: #faf9f6;
+    }
+
+    .btn-next:hover { background: #2a2a3e; }
+
+    .btn-next:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .btn-back {
+      background: transparent;
+      color: #8b8b9b;
+      padding: 0.7rem 0.5rem;
+    }
+
+    .btn-back:hover { color: #1a1a2e; }
+    .btn-back:disabled { opacity: 0; pointer-events: none; }
+
+    /* Thank you screen */
+    .thank-you {
+      display: none;
+      text-align: center;
+      padding-top: 2rem;
+    }
+
+    .thank-you h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .thank-you p {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.95rem;
+      color: #6b6b7b;
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Submitting state */
+    .submitting .btn-next {
+      position: relative;
+      color: transparent;
+    }
+
+    .submitting .btn-next::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      margin: -9px 0 0 -9px;
+      border: 2px solid rgba(250, 249, 246, 0.3);
+      border-top-color: #faf9f6;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Error */
+    .error-msg {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.85rem;
+      color: #c4453c;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .container { padding: 2.5rem 1.25rem 4rem; }
+      .header h1 { font-size: 1.4rem; }
+      .question { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Guest Snapshot Questionnaire</h1>
+      <p>A brief, reflective check-in for <em>Question Everything (Except This Podcast!)</em>. There are no right answers. We're interested in how you think about these questions, not whether you've resolved them.</p>
+    </div>
+
+    <div id="form-area">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-text" id="progress-text"></div>
+
+      <!-- Step 0: Name -->
+      <div class="step active" data-step="0">
+        <p class="question">Before we begin, what's your name?</p>
+        <p class="question-hint">So we know who this belongs to.</p>
+        <input type="text" class="name-input" name="guest_name" placeholder="Your full name" autocomplete="name" />
+      </div>
+
+      <!-- Step 1: Archetype Identifier -->
+      <div class="step" data-step="1">
+        <p class="question">Which of these best describes your relationship with conventional success?</p>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q1_conventional_success" value="Pursued it and achieved it, but something still feels incomplete" />
+            <span class="radio-dot"></span>
+            I pursued it and achieved it, but something still feels incomplete
+          </label>
+          <label class="option">
+            <input type="radio" name="q1_conventional_success" value="Stepped away from it deliberately" />
+            <span class="radio-dot"></span>
+            I stepped away from it deliberately
+          </label>
+          <label class="option">
+            <input type="radio" name="q1_conventional_success" value="Still in it, but increasingly questioning why" />
+            <span class="radio-dot"></span>
+            I'm still in it, but increasingly questioning why
+          </label>
+          <label class="option">
+            <input type="radio" name="q1_conventional_success" value="Never fit the conventional definition to begin with" />
+            <span class="radio-dot"></span>
+            I never fit the conventional definition to begin with
+          </label>
+          <label class="option">
+            <input type="radio" name="q1_conventional_success" value="It's complicated — not sure which of these is true" />
+            <span class="radio-dot"></span>
+            It's complicated &mdash; I'm not sure which of these is true
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 2: Life Stage -->
+      <div class="step" data-step="2">
+        <p class="question">Which best describes where you are right now?</p>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q2_life_stage" value="Building something new" />
+            <span class="radio-dot"></span>
+            Building something new
+          </label>
+          <label class="option">
+            <input type="radio" name="q2_life_stage" value="Maintaining something that matters" />
+            <span class="radio-dot"></span>
+            Maintaining something that matters
+          </label>
+          <label class="option">
+            <input type="radio" name="q2_life_stage" value="Repairing something that broke" />
+            <span class="radio-dot"></span>
+            Repairing something that broke
+          </label>
+          <label class="option">
+            <input type="radio" name="q2_life_stage" value="Letting something go" />
+            <span class="radio-dot"></span>
+            Letting something go
+          </label>
+          <label class="option">
+            <input type="radio" name="q2_life_stage" value="Searching for what's next" />
+            <span class="radio-dot"></span>
+            Searching for what's next
+          </label>
+          <label class="option">
+            <input type="radio" name="q2_life_stage" value="Not sure — and that feels honest" />
+            <span class="radio-dot"></span>
+            Not sure &mdash; and that feels honest
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 3: The Money Question (text) -->
+      <div class="step" data-step="3">
+        <p class="question">Think of a decision that shaped your current life. What did you have to give up to make it?</p>
+        <p class="question-hint">Be as specific as you'd like.</p>
+        <textarea class="text-input" name="q3_tradeoff" placeholder=""></textarea>
+      </div>
+
+      <!-- Step 4: Paths Not Taken -->
+      <div class="step" data-step="4">
+        <p class="question">When you think about the paths you didn't take, what feeling shows up most?</p>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q4_paths" value="Relief" />
+            <span class="radio-dot"></span>
+            Relief
+          </label>
+          <label class="option">
+            <input type="radio" name="q4_paths" value="Curiosity" />
+            <span class="radio-dot"></span>
+            Curiosity
+          </label>
+          <label class="option">
+            <input type="radio" name="q4_paths" value="Regret" />
+            <span class="radio-dot"></span>
+            Regret
+          </label>
+          <label class="option">
+            <input type="radio" name="q4_paths" value="Gratitude" />
+            <span class="radio-dot"></span>
+            Gratitude
+          </label>
+          <label class="option">
+            <input type="radio" name="q4_paths" value="It depends on the day" />
+            <span class="radio-dot"></span>
+            It depends on the day
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 5: Success Definition -->
+      <div class="step" data-step="5">
+        <p class="question">Which version of success feels most real to you right now?</p>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q5_success" value="Being useful" />
+            <span class="radio-dot"></span>
+            Being useful
+          </label>
+          <label class="option">
+            <input type="radio" name="q5_success" value="Being dependable" />
+            <span class="radio-dot"></span>
+            Being dependable
+          </label>
+          <label class="option">
+            <input type="radio" name="q5_success" value="Being creative" />
+            <span class="radio-dot"></span>
+            Being creative
+          </label>
+          <label class="option">
+            <input type="radio" name="q5_success" value="Being free" />
+            <span class="radio-dot"></span>
+            Being free
+          </label>
+          <label class="option">
+            <input type="radio" name="q5_success" value="Being seen" />
+            <span class="radio-dot"></span>
+            Being seen
+          </label>
+          <label class="option">
+            <input type="radio" name="q5_success" value="Being left alone" />
+            <span class="radio-dot"></span>
+            Being left alone
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 6: Intrinsic Motivation -->
+      <div class="step" data-step="6">
+        <p class="question">If recognition disappeared tomorrow, what would still feel worth protecting?</p>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q6_protect" value="My work" />
+            <span class="radio-dot"></span>
+            My work
+          </label>
+          <label class="option">
+            <input type="radio" name="q6_protect" value="My relationships" />
+            <span class="radio-dot"></span>
+            My relationships
+          </label>
+          <label class="option">
+            <input type="radio" name="q6_protect" value="A craft or practice" />
+            <span class="radio-dot"></span>
+            A craft or practice
+          </label>
+          <label class="option">
+            <input type="radio" name="q6_protect" value="A community or place" />
+            <span class="radio-dot"></span>
+            A community or place
+          </label>
+          <label class="option">
+            <input type="radio" name="q6_protect" value="I'm not sure" />
+            <span class="radio-dot"></span>
+            I'm not sure
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 7: Changed Mind (text) -->
+      <div class="step" data-step="7">
+        <p class="question">What's something you used to believe about success, money, or ambition that you no longer do?</p>
+        <textarea class="text-input" name="q7_changed_mind" placeholder=""></textarea>
+      </div>
+
+      <!-- Step 8: The Pull (text) -->
+      <div class="step" data-step="8">
+        <p class="question">Where do money, status, or recognition still exert pull on you &mdash; even when you wish they didn't?</p>
+        <textarea class="text-input" name="q8_pull" placeholder=""></textarea>
+      </div>
+
+      <!-- Step 9: Evolution Signal -->
+      <div class="step" data-step="9">
+        <p class="question">Which word occupies more of your thinking than it used to?</p>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q9_word" value="Responsibility" />
+            <span class="radio-dot"></span>
+            Responsibility
+          </label>
+          <label class="option">
+            <input type="radio" name="q9_word" value="Stability" />
+            <span class="radio-dot"></span>
+            Stability
+          </label>
+          <label class="option">
+            <input type="radio" name="q9_word" value="Meaning" />
+            <span class="radio-dot"></span>
+            Meaning
+          </label>
+          <label class="option">
+            <input type="radio" name="q9_word" value="Freedom" />
+            <span class="radio-dot"></span>
+            Freedom
+          </label>
+          <label class="option">
+            <input type="radio" name="q9_word" value="Legacy" />
+            <span class="radio-dot"></span>
+            Legacy
+          </label>
+          <label class="option">
+            <input type="radio" name="q9_word" value="Uncertainty" />
+            <span class="radio-dot"></span>
+            Uncertainty
+          </label>
+          <label class="option">
+            <input type="radio" name="q9_word" value="Enough" />
+            <span class="radio-dot"></span>
+            Enough
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 10: The Closer (text, optional) -->
+      <div class="step" data-step="10">
+        <p class="question">Finish this sentence:</p>
+        <p class="question-hint">Lately, I've been rethinking...</p>
+        <textarea class="text-input" name="q10_rethinking" placeholder=""></textarea>
+      </div>
+
+      <div class="nav">
+        <button type="button" class="btn-back" id="back" disabled>&larr; Back</button>
+        <button type="button" class="btn-next" id="next" disabled>Continue</button>
+      </div>
+
+      <p class="error-msg" id="error-msg">Something went wrong. Please try again.</p>
+    </div>
+
+    <!-- Thank you -->
+    <div class="thank-you" id="thank-you">
+      <h2>Thank you.</h2>
+      <p>We appreciate you taking the time to think through these with us. Your responses will help shape a more thoughtful conversation &mdash; one that goes beyond the usual questions.</p>
+      <p style="margin-top: 1.5rem;">We'll be in touch soon with next steps.</p>
+    </div>
+  </div>
+
+  <script>
+    const steps = document.querySelectorAll('.step');
+    const totalSteps = steps.length;
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+    const nextBtn = document.getElementById('next');
+    const backBtn = document.getElementById('back');
+    const formArea = document.getElementById('form-area');
+    const thankYou = document.getElementById('thank-you');
+    const errorMsg = document.getElementById('error-msg');
+    let current = 0;
+
+    function showStep(index) {
+      steps.forEach((s, i) => s.classList.toggle('active', i === index));
+      backBtn.disabled = index === 0;
+      progressFill.style.width = `${((index + 1) / totalSteps) * 100}%`;
+      progressText.textContent = `${index + 1} of ${totalSteps}`;
+      nextBtn.textContent = index === totalSteps - 1 ? 'Submit' : 'Continue';
+      validateStep();
+    }
+
+    function validateStep() {
+      const step = steps[current];
+      const radios = step.querySelectorAll('input[type="radio"]');
+      const textInputs = step.querySelectorAll('textarea, input[type="text"]');
+      let valid = false;
+
+      if (radios.length > 0) {
+        radios.forEach(r => { if (r.checked) valid = true; });
+      }
+
+      if (textInputs.length > 0) {
+        textInputs.forEach(input => {
+          if (input.value.trim().length > 0) valid = true;
+        });
+        // Last step (closer) is optional
+        if (current === totalSteps - 1) valid = true;
+      }
+
+      nextBtn.disabled = !valid;
+    }
+
+    function collectResponses() {
+      const data = {};
+      const allInputs = formArea.querySelectorAll('input[type="text"], input[type="radio"]:checked, textarea');
+      allInputs.forEach(input => {
+        if (input.type === 'radio') {
+          data[input.name] = input.value;
+        } else {
+          data[input.name] = input.value.trim();
+        }
+      });
+      return data;
+    }
+
+    async function submitForm() {
+      formArea.classList.add('submitting');
+      nextBtn.disabled = true;
+      errorMsg.style.display = 'none';
+
+      try {
+        const responses = collectResponses();
+        const res = await fetch('/.netlify/functions/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(responses),
+        });
+
+        if (!res.ok) throw new Error('Submission failed');
+
+        formArea.style.display = 'none';
+        thankYou.style.display = 'block';
+      } catch (err) {
+        formArea.classList.remove('submitting');
+        nextBtn.disabled = false;
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (current < totalSteps - 1) {
+        current++;
+        showStep(current);
+      } else {
+        submitForm();
+      }
+    });
+
+    backBtn.addEventListener('click', () => {
+      if (current > 0) {
+        current--;
+        showStep(current);
+      }
+    });
+
+    formArea.addEventListener('input', validateStep);
+    formArea.addEventListener('change', validateStep);
+    showStep(current);
+  </script>
+</body>
+</html>
