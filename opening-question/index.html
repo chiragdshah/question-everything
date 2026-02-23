@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Opening Question | Question Everything</title>
+  <meta name="description"
+    content="A brief, reflective check-in for Question Everything guests. There are no right answers." />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/assets/logo-symbol-transparent.png" type="image/png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Oswald:wght@400;500&display=swap"
+    rel="stylesheet" />
+
+  <!-- Site stylesheet -->
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <style>
+    /* ---- Opening Question Page ---- */
+    .oq-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .oq-hero {
+      padding: clamp(3rem, 8vw, 5rem) clamp(1.25rem, 4vw, 2rem) 0;
+      text-align: center;
+    }
+
+    .oq-hero__wordmark {
+      width: clamp(180px, 30vw, 280px);
+      margin: 0 auto 2rem;
+    }
+
+    .oq-hero h1 {
+      margin-bottom: 0.75rem;
+    }
+
+    .oq-hero p {
+      max-width: 560px;
+      margin: 0 auto;
+      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+      color: var(--color-text-muted);
+      line-height: 1.7;
+    }
+
+    /* Form Container */
+    .oq-form-section {
+      flex: 1;
+      padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2rem) clamp(4rem, 8vw, 6rem);
+    }
+
+    .oq-form-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Progress */
+    .progress-bar {
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 2.5rem;
+      border-radius: 1px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--color-primary);
+      transition: width 0.4s ease;
+      border-radius: 1px;
+    }
+
+    .progress-text {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      text-align: right;
+      margin-top: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Steps */
+    .step {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Questions */
+    .question {
+      font-family: var(--font-display);
+      font-size: clamp(1.15rem, 2vw, 1.35rem);
+      font-weight: 400;
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+      color: var(--color-white);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .question-hint {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    /* Radio options */
+    .options {
+      margin-top: 1.5rem;
+    }
+
+    .option {
+      display: block;
+      position: relative;
+      padding: 0.9rem 1.1rem 0.9rem 2.8rem;
+      margin-bottom: 0.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--color-white);
+    }
+
+    .option:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .option input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .option .radio-dot {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .option input:checked~.radio-dot {
+      border-color: var(--color-primary);
+      background: var(--color-primary);
+      box-shadow: inset 0 0 0 3px var(--color-navy);
+    }
+
+    .option:has(input:checked) {
+      border-color: var(--color-primary);
+      background: rgba(250, 112, 23, 0.08);
+    }
+
+    /* Text inputs */
+    .text-input {
+      width: 100%;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.6;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--color-white);
+      resize: vertical;
+      min-height: 140px;
+      transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      background: rgba(255, 255, 255, 0.09);
+      box-shadow: 0 0 0 3px rgba(250, 112, 23, 0.15);
+    }
+
+    .text-input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Name input */
+    .name-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--color-white);
+      transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .name-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      background: rgba(255, 255, 255, 0.09);
+      box-shadow: 0 0 0 3px rgba(250, 112, 23, 0.15);
+    }
+
+    .name-input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .oq-btn {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.7rem 1.6rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-next {
+      background: var(--color-primary);
+      color: var(--color-white);
+      border: 2px solid var(--color-primary);
+    }
+
+    .btn-next:hover {
+      background: #e5640f;
+      border-color: #e5640f;
+    }
+
+    .btn-next:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .btn-back {
+      background: transparent;
+      color: var(--color-text-muted);
+      padding: 0.7rem 0.5rem;
+      border: none;
+    }
+
+    .btn-back:hover {
+      color: var(--color-white);
+    }
+
+    .btn-back:disabled {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Thank you screen */
+    .thank-you {
+      display: none;
+      text-align: center;
+      padding: clamp(4rem, 10vw, 8rem) clamp(1.25rem, 4vw, 2rem);
+      flex: 1;
+    }
+
+    .thank-you.visible {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .thank-you__icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(250, 112, 23, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .thank-you__icon svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--color-primary);
+    }
+
+    .thank-you h2 {
+      margin-bottom: 1rem;
+    }
+
+    .thank-you p {
+      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .thank-you .btn {
+      margin-top: 2rem;
+    }
+
+    /* Submitting state */
+    .submitting .btn-next {
+      position: relative;
+      color: transparent;
+    }
+
+    .submitting .btn-next::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      margin: -9px 0 0 -9px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: var(--color-white);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Error */
+    .error-msg {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: #f87171;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .oq-hero h1 {
+        font-size: clamp(1.3rem, 4vw, 1.6rem);
+      }
+
+      .question {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="oq-page">
+
+    <!-- Hero / Header -->
+    <div class="oq-hero">
+      <a href="/" aria-label="Back to homepage">
+        <img src="/assets/wordmark-dark.png" alt="Question Everything (Except This Podcast!)"
+          class="oq-hero__wordmark" />
+      </a>
+      <h1>The Opening Question</h1>
+      <p>A brief, reflective check-in for <em>Question Everything (Except This&nbsp;Podcast!)</em>. There are no right
+        answers. We're interested in how you think about these questions, not whether you've resolved&nbsp;them.</p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="oq-form-section" id="form-area">
+      <div class="oq-form-inner">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text"></div>
+
+        <!-- Step 0: Name -->
+        <div class="step active" data-step="0">
+          <p class="question">Before we begin, what's your name?</p>
+          <p class="question-hint">So we know who this belongs to.</p>
+          <input type="text" class="name-input" name="guest_name" placeholder="Your full name" autocomplete="name" />
+        </div>
+
+        <!-- Step 1: Story Stage (radio) -->
+        <div class="step" data-step="1">
+          <p class="question">Which of these best describes where you are in your own story right now?</p>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q1_story_stage" value="Building something I believe in" />
+              <span class="radio-dot"></span>
+              Building something I believe in
+            </label>
+            <label class="option">
+              <input type="radio" name="q1_story_stage" value="Questioning something I built" />
+              <span class="radio-dot"></span>
+              Questioning something I built
+            </label>
+            <label class="option">
+              <input type="radio" name="q1_story_stage" value="Recovering from a big decision" />
+              <span class="radio-dot"></span>
+              Recovering from a big decision
+            </label>
+            <label class="option">
+              <input type="radio" name="q1_story_stage" value="Searching for what comes next" />
+              <span class="radio-dot"></span>
+              Searching for what comes next
+            </label>
+            <label class="option">
+              <input type="radio" name="q1_story_stage" value="Holding multiple things in tension" />
+              <span class="radio-dot"></span>
+              Holding multiple things in tension
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 2: Decision Cost (text) -->
+        <div class="step" data-step="2">
+          <p class="question">Think of a decision that changed the direction of your life. What did it cost you &mdash;
+            not just practically, but personally?</p>
+          <p class="question-hint">A sentence or two is plenty — we're not looking for essays.</p>
+          <textarea class="text-input" name="q2_decision_cost" placeholder=""></textarea>
+        </div>
+
+        <!-- Step 3: Paths Not Taken Feeling (radio) -->
+        <div class="step" data-step="3">
+          <p class="question">When you think about the paths you didn't take, what feeling comes up most?</p>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q3_paths_feeling" value="Relief" />
+              <span class="radio-dot"></span>
+              Relief
+            </label>
+            <label class="option">
+              <input type="radio" name="q3_paths_feeling" value="Curiosity" />
+              <span class="radio-dot"></span>
+              Curiosity
+            </label>
+            <label class="option">
+              <input type="radio" name="q3_paths_feeling" value="Regret" />
+              <span class="radio-dot"></span>
+              Regret
+            </label>
+            <label class="option">
+              <input type="radio" name="q3_paths_feeling" value="Gratitude" />
+              <span class="radio-dot"></span>
+              Gratitude
+            </label>
+            <label class="option">
+              <input type="radio" name="q3_paths_feeling" value="It depends on the day" />
+              <span class="radio-dot"></span>
+              It depends on the day
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 4: Who Shaped You (text) -->
+        <div class="step" data-step="4">
+          <p class="question">Who has shaped how you think about what a good life looks like &mdash; and what did they
+            show you, or fail to show you?</p>
+          <p class="question-hint">A sentence or two is plenty — we're not looking for essays.</p>
+          <textarea class="text-input" name="q4_who_shaped" placeholder=""></textarea>
+        </div>
+
+        <!-- Step 5: Unlearned Belief (text) -->
+        <div class="step" data-step="5">
+          <p class="question">What's something you used to believe about success that you've had to unlearn?</p>
+          <p class="question-hint">A sentence or two is plenty — we're not looking for essays.</p>
+          <textarea class="text-input" name="q5_unlearned" placeholder=""></textarea>
+        </div>
+
+        <!-- Step 6: The Pull (text) -->
+        <div class="step" data-step="6">
+          <p class="question">Where do you still feel the pull of something you've told yourself you don't want?</p>
+          <p class="question-hint">A sentence or two is plenty — we're not looking for essays.</p>
+          <textarea class="text-input" name="q6_the_pull" placeholder=""></textarea>
+        </div>
+
+        <!-- Step 7: Misunderstanding (text) -->
+        <div class="step" data-step="7">
+          <p class="question">What do most people misunderstand about the choices you've made?</p>
+          <p class="question-hint">A sentence or two is plenty — we're not looking for essays.</p>
+          <textarea class="text-input" name="q7_misunderstanding" placeholder=""></textarea>
+        </div>
+
+        <!-- Step 8: Rethinking (text, optional) -->
+        <div class="step" data-step="8">
+          <p class="question">Finish this sentence:</p>
+          <p class="question-hint">Lately, I've been rethinking...</p>
+          <textarea class="text-input" name="q8_rethinking" placeholder=""></textarea>
+        </div>
+
+        <div class="nav">
+          <button type="button" class="oq-btn btn-back" id="back" disabled>&larr; Back</button>
+          <button type="button" class="oq-btn btn-next" id="next" disabled>Continue</button>
+        </div>
+
+        <p class="error-msg" id="error-msg">Something went wrong. Please try again.</p>
+      </div>
+    </div>
+
+    <!-- Thank you -->
+    <div class="thank-you" id="thank-you">
+      <div class="thank-you__icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+        </svg>
+      </div>
+      <h2>Thank You</h2>
+      <p>We appreciate you taking the time to think through these with us. Your responses will help shape a more
+        thoughtful conversation &mdash; one that goes beyond the usual questions.</p>
+      <p style="margin-top: 1.5rem;">We'll be in touch soon with next steps.</p>
+      <a href="/" class="btn btn-secondary" style="margin-top: 2rem;">← Back to Question Everything</a>
+    </div>
+
+    <!-- Minimal footer -->
+    <footer class="footer">
+      <div class="footer__inner">
+        <a href="/">
+          <img src="/assets/wordmark-dark.png" alt="Question Everything (Except This Podcast!)" class="footer__wordmark"
+            width="200" height="38" />
+        </a>
+        <p class="footer__copy">© 2026 Question Everything</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    const steps = document.querySelectorAll('.step');
+    const totalSteps = steps.length;
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+    const nextBtn = document.getElementById('next');
+    const backBtn = document.getElementById('back');
+    const formArea = document.getElementById('form-area');
+    const thankYou = document.getElementById('thank-you');
+    const errorMsg = document.getElementById('error-msg');
+    let current = 0;
+
+    function showStep(index) {
+      steps.forEach((s, i) => s.classList.toggle('active', i === index));
+      backBtn.disabled = index === 0;
+      progressFill.style.width = `${((index + 1) / totalSteps) * 100}%`;
+      progressText.textContent = `${index + 1} of ${totalSteps}`;
+      nextBtn.textContent = index === totalSteps - 1 ? 'Submit' : 'Continue';
+      validateStep();
+    }
+
+    function validateStep() {
+      const step = steps[current];
+      const radios = step.querySelectorAll('input[type="radio"]');
+      const textInputs = step.querySelectorAll('textarea, input[type="text"]');
+      let valid = false;
+
+      if (radios.length > 0) {
+        radios.forEach(r => { if (r.checked) valid = true; });
+      }
+
+      if (textInputs.length > 0) {
+        textInputs.forEach(input => {
+          if (input.value.trim().length > 0) valid = true;
+        });
+        // Last step (closer) is optional
+        if (current === totalSteps - 1) valid = true;
+      }
+
+      nextBtn.disabled = !valid;
+    }
+
+    function collectResponses() {
+      const data = {};
+      const allInputs = formArea.querySelectorAll('input[type="text"], input[type="radio"]:checked, textarea');
+      allInputs.forEach(input => {
+        if (input.type === 'radio') {
+          data[input.name] = input.value;
+        } else {
+          data[input.name] = input.value.trim();
+        }
+      });
+      return data;
+    }
+
+    async function submitForm() {
+      formArea.classList.add('submitting');
+      nextBtn.disabled = true;
+      errorMsg.style.display = 'none';
+
+      try {
+        const responses = collectResponses();
+        const res = await fetch('/.netlify/functions/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(responses),
+        });
+
+        if (!res.ok) throw new Error('Submission failed');
+
+        formArea.style.display = 'none';
+        document.querySelector('.oq-hero').style.display = 'none';
+        thankYou.classList.add('visible');
+      } catch (err) {
+        formArea.classList.remove('submitting');
+        nextBtn.disabled = false;
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (current < totalSteps - 1) {
+        current++;
+        showStep(current);
+      } else {
+        submitForm();
+      }
+    });
+
+    backBtn.addEventListener('click', () => {
+      if (current > 0) {
+        current--;
+        showStep(current);
+      }
+    });
+
+    formArea.addEventListener('input', validateStep);
+    formArea.addEventListener('change', validateStep);
+    showStep(current);
+  </script>
+</body>
+
+</html>

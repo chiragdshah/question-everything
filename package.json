@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "Question Everything (Except This Podcast!) - website and guest tools",
   "private": true,
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  },
   "devDependencies": {
     "@netlify/functions": "^2.8.0",
+    "@types/node": "^25.3.0",
     "typescript": "^5.5.0"
   }
 }
