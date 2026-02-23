@@ -2,22 +2,7 @@
    Question Everything — Design System & Styles
    ========================================================================== */
 
-/* --- Fonts --- */
-@font-face {
-  font-family: 'Oswald';
-  src: url('/assets/fonts/Oswald-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url('/assets/fonts/Inter-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
+/* --- Fonts loaded via Google Fonts CDN (see index.html <head>) --- */
 
 /* --- Custom Properties --- */
 :root {
