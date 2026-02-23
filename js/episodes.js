@@ -60,10 +60,8 @@
   }
 
   function stripPrefix(str) {
-    // Strip "?E! #XX - " prefix and clean up pipe separators
-    return str
-      .replace(/^\?E!?\s*#?\d*\s*[-–—]\s*/i, "")
-      .replace(/\s*\|\s*/g, " — ");
+    // Strip "?E! #XX - " prefix
+    return str.replace(/^\?E!?\s*#?\d*\s*[-–—]\s*/i, "");
   }
 
   function escapeHtml(str) {
