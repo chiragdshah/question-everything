@@ -558,35 +558,28 @@ h3 {
 }
 
 .find-us__icons {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1.5rem 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem 1rem;
   margin-top: 1.5rem;
-  max-width: 400px;
+  max-width: 500px;
   margin-left: auto;
   margin-right: auto;
-  justify-items: center;
 }
 
 .find-us__link {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
-  width: 100%;
-  max-width: 80px;
+  gap: 0.35rem;
   color: rgba(255, 255, 255, 0.7);
   transition: color 0.2s ease;
   text-decoration: none;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   letter-spacing: 0.05em;
   text-align: center;
-  /* Mobile 4-3-3 via 12-col grid */
-  grid-column: span 3;
-}
-
-.find-us__link:nth-child(n+5) {
-  grid-column: span 4;
+  width: 56px;
 }
 
 .find-us__link:hover,
@@ -595,30 +588,27 @@ h3 {
 }
 
 .find-us__link svg {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   fill: currentColor;
 }
 
 @media (min-width: 768px) {
   .find-us__icons {
-    grid-template-columns: repeat(10, 1fr);
-    max-width: 600px;
-    gap: 2rem 1.5rem;
-  }
-
-  .find-us__link,
-  .find-us__link:nth-child(n+5) {
-    grid-column: span 2;
+    flex-wrap: nowrap;
+    max-width: 750px;
+    gap: 0.75rem;
   }
 
   .find-us__link {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    width: auto;
+    min-width: 60px;
   }
 
   .find-us__link svg {
-    width: 32px;
-    height: 32px;
+    width: 22px;
+    height: 22px;
   }
 }
 
@@ -641,19 +631,42 @@ h3 {
   text-align: center;
 }
 
-.footer__links {
+.host__socials {
+  margin-top: 1.25rem;
   display: flex;
-  gap: 1.5rem;
-  font-size: 0.85rem;
+  justify-content: center;
+  gap: 1rem;
 }
 
-.footer__links a {
+.host__socials a {
   color: var(--color-text-muted);
   transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.footer__links a:hover,
-.footer__links a:focus-visible {
+.host__socials a:hover,
+.host__socials a:focus-visible {
+  color: var(--color-primary);
+}
+
+.footer__socials {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.footer__socials a {
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer__socials a:hover,
+.footer__socials a:focus-visible {
   color: var(--color-primary);
 }
 
