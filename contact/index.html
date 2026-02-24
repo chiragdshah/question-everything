@@ -8,6 +8,23 @@
     <meta name="description"
         content="Reach out to Question Everything. Whether you want to be a guest, share a story, or just say hello — we'd love to hear from you." />
 
+    <!-- Open Graph -->
+    <meta property="og:title" content="Get in Touch — Question Everything" />
+    <meta property="og:description"
+        content="Reach out to Question Everything. Whether you want to be a guest, share a story, or just say hello — we'd love to hear from you." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://questioneverythingetp.com/contact" />
+    <meta property="og:image" content="https://questioneverythingetp.com/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Get in Touch — Question Everything" />
+    <meta name="twitter:description"
+        content="Reach out to Question Everything. Whether you want to be a guest, share a story, or just say hello — we'd love to hear from you." />
+    <meta name="twitter:image" content="https://questioneverythingetp.com/assets/og-image.png" />
+
     <!-- Favicon -->
     <link rel="icon" href="/assets/logo-symbol-transparent.png" type="image/png" />
 
@@ -268,10 +285,7 @@
 
         <!-- Form Section -->
         <div class="contact-form-section" id="form-section">
-            <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field"
-                id="contact-form">
-                <!-- Netlify hidden fields -->
-                <input type="hidden" name="form-name" value="contact" />
+            <form class="contact-form" id="contact-form">
                 <p class="form-hp">
                     <label>Don't fill this out: <input name="bot-field" /></label>
                 </p>
@@ -386,16 +400,25 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            // Honeypot check
+            if (form.querySelector('[name="bot-field"]').value) return;
+
             const btn = document.getElementById('submit-btn');
             btn.disabled = true;
             btn.textContent = 'Sending…';
 
             try {
-                const formData = new FormData(form);
-                const res = await fetch('/', {
+                const data = {
+                    name: form.querySelector('[name="name"]').value.trim(),
+                    email: form.querySelector('[name="email"]').value.trim(),
+                    subject: form.querySelector('[name="subject"]').value,
+                    message: form.querySelector('[name="message"]').value.trim(),
+                };
+
+                const res = await fetch('/.netlify/functions/contact-submit', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams(formData).toString(),
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
                 });
 
                 if (!res.ok) throw new Error('Submission failed');
