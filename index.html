@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Question Everything — A Philosophy of Life Podcast</title>
   <meta name="description"
-    content="Deliberate, examine, and explore what a well-lived life consists of across diverse perspectives. A Socratic conversation hosted by Chirag Shah and Sunay Shah." />
+    content="Examine, explore, and question what a well-lived life looks like across diverse perspectives. A Socratic conversation hosted by Chirag Shah and Sunay Shah." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Question Everything — A Philosophy of Life Podcast" />
   <meta property="og:description"
-    content="Deliberate, examine, and explore what a well-lived life consists of across diverse perspectives." />
+    content="Examine, explore, and question what a well-lived life looks like across diverse perspectives." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://questioneverythingetp.com" />
   <meta property="og:image" content="https://questioneverythingetp.com/assets/logo-color-transparent.png" />
@@ -38,12 +38,12 @@
   <section class="hero bg-navy" id="hero">
     <img src="/assets/wordmark-dark.png" alt="Question Everything (Except This Podcast!)" class="hero__wordmark"
       width="450" height="86" />
-    <h1 class="hero__headline">
-      <span class="accent">"</span>An unexamined life is not worth&nbsp;living.<span class="accent">"</span>
-    </h1>
-    <p class="hero__attribution">— Socrates</p>
+    <blockquote class="hero__quote">
+      <p class="hero__quote-text">An unexamined life is not worth&nbsp;living.</p>
+      <footer class="hero__quote-attribution">— Socrates</footer>
+    </blockquote>
     <p class="hero__subhead">
-      Deliberate, examine, and explore what a well-lived life consists of across diverse perspectives.
+      Examine, explore, and question what a well-lived life looks like across diverse perspectives.
     </p>
     <div class="hero__ctas">
       <a href="https://open.spotify.com/show/1FCFskt7FBDZuyGtzLsQ5R" class="btn btn-primary" id="cta-spotify"
@@ -63,6 +63,12 @@
         Watch on YouTube
       </a>
     </div>
+    <a href="#about" class="hero__scroll-hint" aria-label="Scroll down">
+      <svg width="36" height="20" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M2 2l10 10L22 2" />
+      </svg>
+    </a>
   </section>
 
   <!-- ============================================================
@@ -83,7 +89,8 @@
        Section 3 — Recent Episodes
        ============================================================ -->
   <section class="container" id="episodes">
-    <h2>Recent Episodes</h2>
+    <hr class="section-divider" />
+    <h2 style="text-align: center;">Recent Episodes</h2>
     <div class="episodes__grid" id="episodes-grid">
       <div class="episodes__loading">Loading latest episodes…</div>
     </div>
@@ -159,6 +166,7 @@
        Section 6 — Be a Guest
        ============================================================ -->
   <section class="container be-a-guest" id="guest">
+    <hr class="section-divider" />
     <h2>Be a Guest</h2>
     <div class="be-a-guest__content">
       <p>
@@ -180,6 +188,7 @@
        Section 7 — Find Us
        ============================================================ -->
   <section class="find-us" id="find-us">
+    <hr class="section-divider" />
     <h2>Listen</h2>
     <div class="find-us__icons">
       <a href="https://music.amazon.com/podcasts/c63abfd7-1344-4b87-b6b8-7d7fdf4c3ee1" class="find-us__link"
@@ -308,6 +317,19 @@
 
   <!-- Episode loader -->
   <script src="/js/episodes.js"></script>
+
+  <!-- Fade scroll-hint on scroll -->
+  <script>
+    (function () {
+      var hint = document.querySelector('.hero__scroll-hint');
+      if (!hint) return;
+      window.addEventListener('scroll', function () {
+        var fade = 1 - Math.min(window.scrollY / 200, 1);
+        hint.style.opacity = fade;
+        hint.style.pointerEvents = fade < 0.1 ? 'none' : '';
+      }, { passive: true });
+    })();
+  </script>
 
 </body>
 
