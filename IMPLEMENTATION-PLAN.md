@@ -69,8 +69,8 @@ Each question has a clear prep purpose — what it gives the hosts:
 |------|----------|------|-----------------|
 | 0 | Name | Text input | Identity |
 | 1 | "Which of these best describes where you are in your own story right now?" | Radio (5) | Orientation — where the guest's head is at |
-| 2 | "Think of a decision that changed the direction of your life. What did it cost you — not just practically, but personally?" | Text | Core tradeoff — the emotional/relational cost |
-| 3 | "When you think about the paths you didn't take, what feeling comes up most?" | Radio (5) | Emotional signal |
+| 2 | "Think of a decision that shaped where you are today. What did it cost you — or what did it give you that you didn't expect?" | Text | Core tradeoff — works for pivots AND for staying the course |
+| 3 | "When you think about the path you're on, what feeling comes up most?" | Radio (5) | Emotional signal — forward-looking, not regret-oriented |
 | 4 | "Who has shaped how you think about what a good life looks like — and what did they show you, or fail to show you?" | Text | Influential relationships — specific people the hosts can ask about |
 | 5 | "What's something you used to believe about success that you've had to unlearn?" | Text | Evolution of thinking |
 | 6 | "Where do you still feel the pull of something you've told yourself you don't want?" | Text | Unresolved tension — where stated values and actual feelings diverge |
@@ -86,11 +86,11 @@ Each question has a clear prep purpose — what it gives the hosts:
 - Searching for what comes next
 - Holding multiple things in tension
 
-**Step 3 — "Paths not taken feeling":**
-- Relief
-- Curiosity
-- Regret
-- Gratitude
+**Step 3 — "Path you're on feeling":**
+- Conviction — I'd choose it again
+- Curiosity — I wonder what else was possible
+- Gratitude — even for the hard parts
+- Tension — parts fit, parts don't
 - It depends on the day
 
 ### Design Principles
