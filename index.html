@@ -111,7 +111,57 @@
   </section>
 
   <!-- ============================================================
-       Section 4 — Newsletter CTA
+       Section 4 — YouTube Shorts
+       ============================================================ -->
+  <section class="container shorts-section" id="shorts">
+    <hr class="section-divider" />
+    <h2 style="text-align: center;">Shorts &amp; Clips</h2>
+    <p class="shorts-section__subtitle">Quick cuts from our conversations.</p>
+    <div class="shorts-carousel" id="shorts-carousel">
+      <div class="episodes__loading">Loading latest clips…</div>
+    </div>
+    <div class="episodes__more">
+      <a href="https://www.youtube.com/@questioneverythingetp/shorts" target="_blank" rel="noopener noreferrer">
+        See all shorts →
+      </a>
+    </div>
+  </section>
+
+  <!-- Shorts lightbox modal -->
+  <dialog class="shorts-modal" id="shorts-modal" aria-label="Watch Short">
+    <button class="shorts-modal__close" id="shorts-modal-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="20" height="20" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <button class="shorts-modal__nav shorts-modal__nav--prev" id="shorts-nav-prev" aria-label="Previous short">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="20" height="20" aria-hidden="true">
+        <path d="M18 15l-6-6-6 6"/>
+      </svg>
+    </button>
+
+    <div class="shorts-modal__frame">
+      <iframe
+        id="shorts-iframe"
+        src=""
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen
+        title="YouTube Short"
+      ></iframe>
+    </div>
+
+    <button class="shorts-modal__nav shorts-modal__nav--next" id="shorts-nav-next" aria-label="Next short">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="20" height="20" aria-hidden="true">
+        <path d="M6 9l6 6 6-6"/>
+      </svg>
+    </button>
+
+    <div class="shorts-dots" id="shorts-dots"></div>
+  </dialog>
+
+  <!-- ============================================================
+       Section 5 — Newsletter CTA
        ============================================================ -->
   <section class="newsletter bg-white" id="newsletter">
     <div class="container">
@@ -326,6 +376,7 @@
 
   <!-- Episode loader -->
   <script src="/js/episodes.js"></script>
+  <script src="/js/shorts.js"></script>
 
   <!-- Fade scroll-hint on scroll -->
   <script>

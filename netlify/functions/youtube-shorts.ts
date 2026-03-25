@@ -1,16 +1,15 @@
 import type { Handler, HandlerEvent } from "@netlify/functions";
 
 const CHANNEL_ID = "UC2aiyplnabkJ7YzfWK1yISw";
-// UULF playlist = YouTube's auto-generated long-form-only feed (excludes Shorts)
-const UULF_PLAYLIST_ID = "UULF" + CHANNEL_ID.slice(2);
-const FEED_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${UULF_PLAYLIST_ID}`;
-const MAX_EPISODES = 6;
+// UUSH playlist = YouTube's auto-generated Shorts-only feed
+const UUSH_PLAYLIST_ID = "UUSH" + CHANNEL_ID.slice(2);
+const FEED_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${UUSH_PLAYLIST_ID}`;
+const MAX_SHORTS = 8;
 
-interface Episode {
+interface Short {
     title: string;
     videoId: string;
     thumbnail: string;
-    description: string;
     published: string;
     url: string;
 }
@@ -29,26 +28,19 @@ const handler: Handler = async (event: HandlerEvent) => {
         }
         const xml = await res.text();
 
-        // Parse entries from XML using regex (no DOM parser needed in Node)
-        const entries: Episode[] = [];
+        const entries: Short[] = [];
         const entryRegex = /<entry>([\s\S]*?)<\/entry>/g;
         let match;
 
-        while ((match = entryRegex.exec(xml)) !== null && entries.length < MAX_EPISODES * 2) {
+        while ((match = entryRegex.exec(xml)) !== null && entries.length < MAX_SHORTS * 2) {
             const entry = match[1];
 
             const videoIdMatch = entry.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
             const titleMatch = entry.match(/<media:title>([^<]+)<\/media:title>/);
-            const descMatch = entry.match(/<media:description>([\s\S]*?)<\/media:description>/);
             const pubMatch = entry.match(/<published>([^<]+)<\/published>/);
 
             if (videoIdMatch && titleMatch) {
                 const videoId = videoIdMatch[1];
-                const rawDesc = descMatch?.[1] || "";
-                // Truncate description to first sentence or 200 chars
-                const description = rawDesc.length > 200
-                    ? rawDesc.substring(0, 200).replace(/\s+\S*$/, "") + "…"
-                    : rawDesc;
 
                 const decode = (s: string) =>
                     s.replace(/&quot;/g, '"').replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#39;/g, "'");
@@ -57,26 +49,25 @@ const handler: Handler = async (event: HandlerEvent) => {
                     title: decode(titleMatch[1]),
                     videoId,
                     thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-                    description: decode(description),
                     published: pubMatch?.[1] || "",
-                    url: `https://www.youtube.com/watch?v=${videoId}`,
+                    url: `https://www.youtube.com/shorts/${videoId}`,
                 });
             }
 
-            if (entries.length >= MAX_EPISODES) break;
+            if (entries.length >= MAX_SHORTS) break;
         }
 
         return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({ episodes: entries }),
+            body: JSON.stringify({ shorts: entries }),
         };
     } catch (err) {
-        console.error("youtube-feed error:", err);
+        console.error("youtube-shorts error:", err);
         return {
             statusCode: 502,
             headers,
-            body: JSON.stringify({ error: "Failed to fetch YouTube feed", episodes: [] }),
+            body: JSON.stringify({ error: "Failed to fetch YouTube Shorts feed", shorts: [] }),
         };
     }
 };

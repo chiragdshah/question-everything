@@ -9,6 +9,8 @@
   const GRID_ID = "episodes-grid";
   const YOUTUBE_CHANNEL = "https://www.youtube.com/@questioneverythingetp";
   const CHANNEL_ID = "UC2aiyplnabkJ7YzfWK1yISw";
+  // UULF playlist = YouTube's auto-generated long-form-only feed (excludes Shorts)
+  const UULF_PLAYLIST_ID = "UULF" + CHANNEL_ID.slice(2);
   const MAX_EPISODES = 6;
 
   async function loadEpisodes() {
@@ -35,14 +37,14 @@
         <a href="${ep.url}" target="_blank" rel="noopener noreferrer" class="episode-card">
           <img
             src="${ep.thumbnail}"
-            alt="${escapeHtml(stripPrefix(ep.title))}"
+            alt="${escapeHtml(ep.title)}"
             class="episode-card__thumb"
             loading="lazy"
             width="480"
             height="360"
           />
           <div class="episode-card__body">
-            <h3 class="episode-card__title">${stripPrefix(ep.title)}</h3>
+            <h3 class="episode-card__title">${ep.title}</h3>
             <p class="episode-card__desc">${ep.description}</p>
           </div>
         </a>
@@ -76,7 +78,7 @@
    * Uses multiple CORS proxy services as fallbacks.
    */
   async function fetchFromRSS() {
-    const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+    const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${UULF_PLAYLIST_ID}`;
     const corsProxies = [
       (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
       (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
@@ -103,7 +105,6 @@
 
   /**
    * Parse YouTube RSS XML and extract episode data.
-   * Filters out YouTube Shorts.
    */
   function parseYouTubeRSS(xml) {
     const entries = [];
@@ -112,13 +113,6 @@
 
     while ((match = entryRegex.exec(xml)) !== null && entries.length < MAX_EPISODES * 2) {
       const entry = match[1];
-
-      // Extract video link to check if it's a short
-      const linkMatch = entry.match(/<link rel="alternate" href="([^"]+)"\/>/);
-      const url = linkMatch?.[1] || "";
-
-      // Skip YouTube Shorts — only include full watch videos
-      if (url.includes("/shorts/")) continue;
 
       const videoIdMatch = entry.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
       const titleMatch = entry.match(/<media:title>([^<]+)<\/media:title>/);
@@ -167,11 +161,6 @@
         </a>
       </div>
     `;
-  }
-
-  function stripPrefix(str) {
-    // Strip "?E! #XX - " prefix
-    return str.replace(/^\?E!?\s*#?\d*\s*[-–—]\s*/i, "");
   }
 
   function escapeHtml(str) {
